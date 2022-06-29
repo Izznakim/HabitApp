@@ -38,13 +38,13 @@ class HabitRepository(private val habitDao: HabitDao, private val executor: Exec
         return LivePagedListBuilder(habitDao.getHabits(query), config).build()
     }
 
-    //TODO 5 : Complete other function inside repository
+    //TODO 5 : Complete other function inside repository [SOLVED]
     fun getHabitById(habitId: Int): LiveData<Habit> {
-        throw NotImplementedError("Not yet implemented")
+        return habitDao.getHabitById(habitId)
     }
 
     fun insertHabit(newHabit: Habit): Long {
-        throw NotImplementedError("Not yet implemented")
+        return habitDao.insertHabit(newHabit)
     }
 
     fun deleteHabit(habit: Habit) {
@@ -54,6 +54,6 @@ class HabitRepository(private val habitDao: HabitDao, private val executor: Exec
     }
 
     fun getRandomHabitByPriorityLevel(level: String): LiveData<Habit> {
-        throw NotImplementedError("Not yet implemented")
+        return habitDao.getRandomHabitByPriorityLevel(level)
     }
 }
