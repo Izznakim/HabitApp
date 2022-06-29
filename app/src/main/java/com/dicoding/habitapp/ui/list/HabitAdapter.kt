@@ -1,5 +1,6 @@
 package com.dicoding.habitapp.ui.list
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,9 +15,10 @@ class HabitAdapter(
     private val onClick: (Habit) -> Unit
 ) : PagedListAdapter<Habit, HabitAdapter.HabitViewHolder>(DIFF_CALLBACK) {
 
-    //TODO 8 : Create and initialize ViewHolder
+    //TODO 8 : Create and initialize ViewHolder [SOLVED]
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
-        throw NotImplementedError("Not yet implemented")
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.habit_item, parent, false)
+        return HabitViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
