@@ -5,9 +5,17 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.dicoding.habitapp.notification.NotificationWorker
 import com.dicoding.habitapp.utils.HABIT
+import com.dicoding.habitapp.utils.HABIT_ID
+import com.dicoding.habitapp.utils.HABIT_TITLE
+import java.util.concurrent.TimeUnit
 
 class CountDownActivity : AppCompatActivity() {
 
@@ -33,12 +41,22 @@ class CountDownActivity : AppCompatActivity() {
 
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
 
-        findViewById<Button>(R.id.btn_start).setOnClickListener {
+        val workManager = WorkManager.getInstance(this)
+        val data =
+            Data.Builder().putString(HABIT_TITLE, habit.title).putInt(HABIT_ID, habit.id).build()
+        val oneTimeWorkRequest =
+            OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+                .setInputData(data)
+                .build()
 
+        findViewById<Button>(R.id.btn_start).setOnClickListener {
+            workManager.enqueue(oneTimeWorkRequest)
+            viewModel.startTimer()
         }
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
-
+            workManager.cancelWorkById(oneTimeWorkRequest.id)
+            viewModel.resetTimer()
         }
     }
 
