@@ -8,6 +8,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.utils.DarkMode
+import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -55,7 +56,7 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
             if (key == THEME) {
-                val mode = DarkMode.valueOf(themePreference.value.toUpperCase())
+                val mode = DarkMode.valueOf(themePreference.value.uppercase(Locale.ROOT))
                 updateTheme(mode.value)
             }
         }
