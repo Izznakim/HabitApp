@@ -22,7 +22,9 @@ class HabitAdapter(
     }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
-        //TODO 9 : Get data and bind them to ViewHolder
+        //TODO 9 : Get data and bind them to ViewHolder [SOLVED]
+        val habit=getItem(position) as Habit
+        holder.bind(habit)
     }
 
     inner class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
