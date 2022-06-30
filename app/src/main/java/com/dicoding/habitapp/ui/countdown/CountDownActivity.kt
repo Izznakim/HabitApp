@@ -46,6 +46,7 @@ class CountDownActivity : AppCompatActivity() {
             Data.Builder().putString(HABIT_TITLE, habit.title).putInt(HABIT_ID, habit.id).build()
         val oneTimeWorkRequest =
             OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+                .setInitialDelay(habit.minutesFocus,TimeUnit.MINUTES)
                 .setInputData(data)
                 .build()
 
@@ -56,7 +57,7 @@ class CountDownActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
             workManager.cancelWorkById(oneTimeWorkRequest.id)
-            viewModel.resetTimer()
+            finish()
         }
     }
 

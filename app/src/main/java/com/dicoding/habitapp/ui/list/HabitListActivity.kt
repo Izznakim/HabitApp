@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.dicoding.habitapp.setting.SettingsActivity
 import com.dicoding.habitapp.ui.ViewModelFactory
 import com.dicoding.habitapp.ui.add.AddHabitActivity
 import com.dicoding.habitapp.ui.detail.DetailHabitActivity
+import com.dicoding.habitapp.ui.random.RandomHabitActivity
 import com.dicoding.habitapp.utils.Event
 import com.dicoding.habitapp.utils.HABIT_ID
 import com.dicoding.habitapp.utils.HabitSortType
@@ -26,7 +28,7 @@ class HabitListActivity : AppCompatActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var viewModel: HabitListViewModel
-    private val habitAdapter:HabitAdapter by lazy {
+    private val habitAdapter: HabitAdapter by lazy {
         HabitAdapter(::onHabitClick)
     }
 
@@ -41,9 +43,9 @@ class HabitListActivity : AppCompatActivity() {
         }
 
         //TODO 6 : Initiate RecyclerView with LayoutManager [SOLVED]
-        recycler=findViewById(R.id.rv_habit)
-        recycler.layoutManager=GridLayoutManager(this,2)
-        recycler.adapter=habitAdapter
+        recycler = findViewById(R.id.rv_habit)
+        recycler.layoutManager = GridLayoutManager(this, 2)
+        recycler.adapter = habitAdapter
 
         initAction()
 
@@ -51,14 +53,14 @@ class HabitListActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(HabitListViewModel::class.java)
 
         //TODO 7 : Submit pagedList to adapter and add intent to detail [SOLVED]
-        viewModel.habits.observe(this){
+        viewModel.habits.observe(this) {
             habitAdapter.submitList(it)
         }
     }
 
     private fun onHabitClick(habit: Habit) {
-        val intent=Intent(this,DetailHabitActivity::class.java)
-        intent.putExtra(HABIT_ID,habit.id)
+        val intent = Intent(this, DetailHabitActivity::class.java)
+        intent.putExtra(HABIT_ID, habit.id)
         startActivity(intent)
     }
 
@@ -69,17 +71,36 @@ class HabitListActivity : AppCompatActivity() {
             findViewById(R.id.coordinator_layout),
             getString(message),
             Snackbar.LENGTH_SHORT
-        ).setAction("Undo"){
+        ).setAction("Undo") {
             viewModel.insert(viewModel.undo.value?.getContentIfNotHandled() as Habit)
         }.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
+        return when (item.itemId) {
+            R.id.action_random -> {
+                Intent(this, RandomHabitActivity::class.java).also {
+                    startActivity(it)
+                }
+                true
+            }
+            R.id.action_filter->{
+                showFilteringPopUpMenu()
+                true
+            }
+            R.id.action_settings->{
+                Intent(this, SettingsActivity::class.java).also {
+                    startActivity(it)
+                }
+                true
+            }
+            else -> true
+        }
     }
 
     private fun showFilteringPopUpMenu() {
