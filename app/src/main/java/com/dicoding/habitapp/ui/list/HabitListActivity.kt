@@ -64,7 +64,7 @@ class HabitListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //TODO 15 : Fixing bug : Menu not show and SnackBar not show when list is deleted using swipe
+    //TODO 15 : Fixing bug : Menu not show and SnackBar not show when list is deleted using swipe [SOLVED]
     private fun showSnackBar(eventMessage: Event<Int>) {
         val message = eventMessage.getContentIfNotHandled() ?: return
         Snackbar.make(
@@ -142,6 +142,7 @@ class HabitListActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val habit = (viewHolder as HabitAdapter.HabitViewHolder).getHabit
                 viewModel.deleteHabit(habit)
+                viewModel.snackbarText.value?.let { showSnackBar(it) }
             }
 
         })
