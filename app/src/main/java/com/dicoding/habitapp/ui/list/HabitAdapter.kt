@@ -23,14 +23,14 @@ class HabitAdapter(
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         //TODO 9 : Get data and bind them to ViewHolder [SOLVED]
-        val habit=getItem(position) as Habit
+        val habit = getItem(position) as Habit
         holder.bind(habit)
     }
 
     inner class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvTitle: TextView = itemView.findViewById(R.id.item_tv_title)
-        val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
+        private val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
         private val tvStartTime: TextView = itemView.findViewById(R.id.item_tv_start_time)
         private val tvMinutes: TextView = itemView.findViewById(R.id.item_tv_minutes)
 
@@ -42,6 +42,17 @@ class HabitAdapter(
             tvMinutes.text = habit.minutesFocus.toString()
             itemView.setOnClickListener {
                 onClick(habit)
+            }
+            when (habit.priorityLevel) {
+                itemView.resources.getStringArray(R.array.priority_level)[0] -> {
+                    ivPriority.setImageResource(R.drawable.ic_priority_high)
+                }
+                itemView.resources.getStringArray(R.array.priority_level)[1] -> {
+                    ivPriority.setImageResource(R.drawable.ic_priority_medium)
+                }
+                itemView.resources.getStringArray(R.array.priority_level)[2] -> {
+                    ivPriority.setImageResource(R.drawable.ic_priority_low)
+                }
             }
         }
 
