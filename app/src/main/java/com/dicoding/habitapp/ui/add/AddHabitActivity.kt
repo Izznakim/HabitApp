@@ -41,7 +41,11 @@ class AddHabitActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListe
         return when (item.itemId) {
             R.id.action_save -> {
                 val title = findViewById<EditText>(R.id.add_ed_title).text.toString()
-                val minutesFocus = findViewById<EditText>(R.id.add_ed_minutes_focus).text.toString().toLong()
+                val minutesFocus = if (findViewById<EditText>(R.id.add_ed_minutes_focus).text.toString()==""){
+                    0
+                }else{
+                    findViewById<EditText>(R.id.add_ed_minutes_focus).text.toString().toLong()
+                }
                 val startTime = findViewById<TextView>(R.id.add_tv_start_time).text.toString()
                 val priorityLevel = findViewById<Spinner>(R.id.sp_priority_level).selectedItem.toString()
                 if (title.isNotEmpty()) {

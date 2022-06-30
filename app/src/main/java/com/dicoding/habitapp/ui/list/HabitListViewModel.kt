@@ -1,15 +1,13 @@
 package com.dicoding.habitapp.ui.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
 import com.dicoding.habitapp.data.HabitRepository
 import com.dicoding.habitapp.utils.Event
 import com.dicoding.habitapp.utils.HabitSortType
+import kotlinx.coroutines.launch
 
 class HabitListViewModel(private val habitRepository: HabitRepository) : ViewModel() {
 
@@ -40,6 +38,8 @@ class HabitListViewModel(private val habitRepository: HabitRepository) : ViewMod
     }
 
     fun insert(habit: Habit) {
-        habitRepository.insertHabit(habit)
+        viewModelScope.launch {
+            habitRepository.insertHabit(habit)
+        }
     }
 }

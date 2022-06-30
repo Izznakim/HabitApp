@@ -39,7 +39,7 @@ class CountDownActivity : AppCompatActivity() {
             updateButtonState(it)
         }
 
-        //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
+        //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up. [SOLVED]
 
         val workManager = WorkManager.getInstance(this)
         val data =

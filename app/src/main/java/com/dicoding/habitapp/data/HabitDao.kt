@@ -15,7 +15,7 @@ interface HabitDao {
     fun getHabitById(habitId: Int): LiveData<Habit>
 
     @Insert
-    fun insertHabit(habit: Habit): Long
+    suspend fun insertHabit(habit: Habit): Long
 
     @Insert
     fun insertAll(vararg habits: Habit)

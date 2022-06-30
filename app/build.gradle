@@ -46,7 +46,7 @@ dependencies {
         espresso_version = '3.4.0'
         runner_version = '1.2.0'
 
-        room_version = "2.4.2"
+        room_version = "2.5.0-alpha02"
         arch_lifecycle_version = '2.4.1'
         lifecycle_version = "2.4.1"
         work_version = "2.7.1"
