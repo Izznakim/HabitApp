@@ -43,7 +43,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             applicationContext,
             0,
             intent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_NO_CREATE else 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_CANCEL_CURRENT else 0
         )
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -54,8 +54,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             .setContentText(applicationContext.getString(R.string.notify_content))
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setSound(alarmSound)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

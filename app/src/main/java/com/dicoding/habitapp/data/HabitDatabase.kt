@@ -17,7 +17,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 //TODO 3 : Define room database class and prepopulate database using JSON [SOLVED]
-@Database(entities = [Habit::class], version = 1)
+@Database(entities = [Habit::class], version = 1, exportSchema = false)
 abstract class HabitDatabase : RoomDatabase() {
 
     abstract fun habitDao(): HabitDao
@@ -29,21 +29,25 @@ abstract class HabitDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): HabitDatabase {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     HabitDatabase::class.java,
                     "habits.db"
-                ).fallbackToDestructiveMigration().addCallback(object : Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                        INSTANCE?.let { habitsDatabase ->
-                            val dao = habitsDatabase.habitDao()
-                            CoroutineScope(Dispatchers.IO).launch {
-                                fillWithStartingData(context, dao)
+                )
+                    .fallbackToDestructiveMigration()
+                    .addCallback(object : Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            INSTANCE?.let { habitDatabase ->
+                                val dao = habitDatabase.habitDao()
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    fillWithStartingData(context, dao)
+                                }
                             }
                         }
-                    }
-                }).build()
+                    }).build()
+                INSTANCE = instance
+                instance
             }
         }
 

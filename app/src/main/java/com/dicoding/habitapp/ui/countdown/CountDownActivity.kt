@@ -36,7 +36,7 @@ class CountDownActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tv_count_down).text = it
         }
         viewModel.eventCountDownFinish.observe(this){
-            updateButtonState(it)
+            updateButtonState(false)
         }
 
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up. [SOLVED]
@@ -53,11 +53,13 @@ class CountDownActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_start).setOnClickListener {
             workManager.enqueue(oneTimeWorkRequest)
             viewModel.startTimer()
+            updateButtonState(true)
         }
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
             workManager.cancelWorkById(oneTimeWorkRequest.id)
-            finish()
+            viewModel.resetTimer()
+            updateButtonState(false)
         }
     }
 
